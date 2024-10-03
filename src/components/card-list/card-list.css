@@ -1,0 +1,5 @@
+.card-list {
+  background-color: yellow;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}

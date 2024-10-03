@@ -1,35 +1,39 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Component, useState } from "react";
+import { CardList } from "./components/card-list/card-list-component.jsx";
+import { SearchBox } from "./components/search/search.jsx";
+class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      monsters: [],
+      fieldSearch: "",
+    };
+  }
+  componentDidMount() {
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then((Response) => Response.json())
+      .then((monsters) => this.setState({ monsters: monsters }));
+  }
 
-function App() {
-  const [count, setCount] = useState(0)
+  render() {
+    const { monsters, fieldSearch } = this.state;
+    const filteredMonsters = monsters.filter((moster) =>
+      moster.name.toLowerCase().includes(fieldSearch.toLowerCase())
+    );
+    return (
+      <div className="bg-green-600 ">
+        <h1 className="mx-auto font-extrabold text-center text-stone-800 mb-0 text-4xl italic ">
+          monsters roledex
+        </h1>
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <SearchBox
+          placeholder="search monsters"
+          handleChanger={(e) => this.setState({ fieldSearch: e.target.value })}
+        />
+        <CardList mosters={filteredMonsters}></CardList>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    );
+  }
 }
 
-export default App
+export default App;
