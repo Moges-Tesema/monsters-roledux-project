@@ -37,3 +37,4 @@ class App extends Component {
 }
 
 export default App;
+// resolve conflict between local and remote repository
